@@ -2,6 +2,7 @@ package com.fourd.rabbit.rabbit.listener;
 
 
 import com.fourd.rabbit.document.Teacher;
+import com.fourd.rabbit.dto.CreateLessonsRequest;
 import com.fourd.rabbit.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,4 +26,18 @@ public class RabbitMQJsonConsumer {
         teacherService.createNewTeacher(teacher).subscribe();
         LOGGER.info("[CONSUMING FROM QUEUE] :: END");
     }
+    @RabbitListener(queues = {"${rabbit.lesson.queue.name}"})
+    public void createLesson(CreateLessonsRequest teacher) {
+        LOGGER.info("[CONSUMING FROM QUEUE] :: START");
+        teacherService.createNewLesson(teacher).subscribe();
+        LOGGER.info("[CONSUMING FROM QUEUE] :: END");
+    }
+    @RabbitListener(queues = {"${rabbitmq.json.queue.name}"})
+    public void updateLesson(CreateLessonsRequest updatedLessons) {
+        LOGGER.info("[CONSUMING FROM QUEUE] :: START");
+        teacherService.updateLesson(updatedLessons);
+        LOGGER.info("[CONSUMING FROM QUEUE] :: END");
+    }
+
+
 }
