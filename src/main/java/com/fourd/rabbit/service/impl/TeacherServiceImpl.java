@@ -30,23 +30,23 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Mono<Teacher> findByUsernameTeacher(String username) {
-        return null;
+        return teacherRepository.findByUsername(username);
     }
 
     @Override
-    public void updateLesson(CreateLessonsRequest updatedLessons) {
-        HashMap<String, Lesson> lessons = new LinkedHashMap<>();
-        teacherRepository.findByUsername(updatedLessons.getTeacher())
+    public Mono<Teacher> updateLesson(CreateLessonsRequest updatedLessons) {
+        HashMap<String, Lesson> teacherLessons = new LinkedHashMap<>();
+       return teacherRepository.findByUsername(updatedLessons.getTeacher())
                 .flatMap(teacher -> {
                     teacher.getLessons().forEach(lesson -> {
-                        lessons.put(lesson.getTitle(), lesson);
+                        teacherLessons.put(lesson.getTitle(), lesson);
                     });
                     updatedLessons.getLessons().forEach(lesson -> {
-                        if (lessons.containsKey(lesson.getTitle())) {
-                            lessons.replace(lesson.getTitle(), lesson);
+                        if (teacherLessons.containsKey(lesson.getTitle())) {
+                            teacherLessons.replace(lesson.getTitle(), lesson);
                         }
                     });
-                    teacher.setLessons(lessons.values().stream().toList());
+                    teacher.setLessons(teacherLessons.values().stream().toList());
                     return teacherRepository.save(teacher);
                 }).doOnSuccess(teacher -> {
                     LOGGER.info("Lesson Updated");

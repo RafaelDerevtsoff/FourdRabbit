@@ -28,6 +28,8 @@ dependencies {
 	testImplementation 'org.springframework.cloud:spring-cloud-stream-test-binder'
 	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'io.projectreactor:reactor-test'
 	implementation 'jakarta.json:jakarta.json-api:2.1.1'
 	implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
 	implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
