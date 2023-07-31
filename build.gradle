@@ -16,7 +16,7 @@ repositories {
 }
 
 ext {
-	set('springCloudVersion', "2022.0.3")
+	set('springCloudVersion', "2022.0.4")
 }
 
 dependencies {
@@ -45,6 +45,7 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.1'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.amqp:spring-rabbit-test'
+
 
 }
 

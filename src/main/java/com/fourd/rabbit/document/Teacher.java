@@ -7,6 +7,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.HashMap;
 import java.util.List;
 @JsonDeserialize
 @Document(collection = "teachers")
@@ -23,20 +24,12 @@ public class Teacher {
     private boolean active;
 
     private List<String> roles;
-    private List<Lesson> lessons;
-
-    public List<Lesson> getLessons() {
-        return lessons;
-    }
-
-    public void setLessons(List<Lesson> lessons) {
-        this.lessons = lessons;
-    }
+    private HashMap<String,Lesson> lessons;
 
     public Teacher() {
     }
 
-    public Teacher(String id, String username, String password, boolean active, List<String> roles, List<Lesson> lessons) {
+    public Teacher(String id, @NonNull String username, @NonNull String password, boolean active, List<String> roles, HashMap<String, Lesson> lessons) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -58,15 +51,16 @@ public class Teacher {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(@NonNull String username) {
         this.username = username;
     }
 
+    @NonNull
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@NonNull String password) {
         this.password = password;
     }
 
@@ -85,6 +79,13 @@ public class Teacher {
     public void setRoles(List<String> roles) {
         this.roles = roles;
     }
-    // Constructors, getters, and setters
+
+    public HashMap<String, Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(HashMap<String, Lesson> lessons) {
+        this.lessons = lessons;
+    }
 }
 

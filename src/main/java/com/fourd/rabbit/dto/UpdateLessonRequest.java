@@ -1,28 +1,21 @@
 package com.fourd.rabbit.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fourd.rabbit.document.Lesson;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
-@JsonSerialize
 @JsonDeserialize
-public class CreateLessonsRequest {
+@JsonSerialize
+public class UpdateLessonRequest {
     @JsonProperty("teacher")
     private String teacher;
     @JsonProperty("lessons")
-    private HashMap<String,Lesson> lessons;
+    private Map<String, Lesson> updatedLessons;
 
-    public CreateLessonsRequest(String teacher, HashMap<String, Lesson> lessons) {
-        this.teacher = teacher;
-        this.lessons = lessons;
-    }
-
-    public CreateLessonsRequest() {
+    public UpdateLessonRequest() {
     }
 
     public String getTeacher() {
@@ -33,11 +26,16 @@ public class CreateLessonsRequest {
         this.teacher = teacher;
     }
 
-    public HashMap<String, Lesson> getLessons() {
-        return lessons;
+    public Map<String, Lesson> getUpdatedLessons() {
+        return updatedLessons;
     }
 
-    public void setLessons(HashMap<String, Lesson> lessons) {
-        this.lessons = lessons;
+    public void setUpdatedLessons(Map<String, Lesson> updatedLessons) {
+        this.updatedLessons = updatedLessons;
+    }
+
+    public UpdateLessonRequest(String teacher, Map<String, Lesson> updatedLessons) {
+        this.teacher = teacher;
+        this.updatedLessons = updatedLessons;
     }
 }
