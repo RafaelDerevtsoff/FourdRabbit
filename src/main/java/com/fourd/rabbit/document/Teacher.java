@@ -1,6 +1,8 @@
 package com.fourd.rabbit.document;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.mongodb.lang.NonNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
@@ -10,6 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.util.HashMap;
 import java.util.List;
 @JsonDeserialize
+@JsonSerialize
 @Document(collection = "teachers")
 public class Teacher {
 
@@ -17,6 +20,7 @@ public class Teacher {
     private String id;
     @Indexed(unique = true)
     @NonNull
+    @JsonProperty("username")
     private String username;
     @Indexed(unique = true)
     @NonNull

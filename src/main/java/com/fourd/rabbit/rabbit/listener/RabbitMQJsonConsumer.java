@@ -18,37 +18,46 @@ public class RabbitMQJsonConsumer {
     private final TeacherService teacherService;
 
 
-    public RabbitMQJsonConsumer(TeacherService teacherService, StreamBridge streamBridge) {
+    public RabbitMQJsonConsumer(TeacherService teacherService) {
         this.teacherService = teacherService;
     }
 
-    @RabbitListener(queues = {"${rabbitmq.json.queue.name}"})
-    public void createTeacher(Teacher teacher) {
-        LOGGER.info("[CONSUMING FROM QUEUE] :: START");
-        teacherService.createNewTeacher(teacher).subscribe();
-        LOGGER.info("[CONSUMING FROM QUEUE] :: END");
-    }
+//    @RabbitListener(queues = {"${rabbitmq.json.queue.name}"})
+//    public void createTeacher(Teacher teacher) {
+//        teacherService.createNewTeacher(teacher)
+//                .doOnSubscribe(subscription -> {
+//                    LOGGER.info("[CONSUMING FROM QUEUE CREATE TEACHER] :: START");
+//                })
+//                .doOnSuccess(t -> {
+//                    LOGGER.info("[CONSUMING FROM QUEUE  CREATE TEACHER] :: END");
+//                })
+//                .subscribe();
+//    }
 
-    @RabbitListener(queues = {"${rabbit.lesson.queue.name}"})
-    public void createLesson(CreateLessonsRequest teacher) {
-        LOGGER.info("[CONSUMING FROM QUEUE] :: START");
-        teacherService.createNewLesson(teacher).subscribe();
-        LOGGER.info("[CONSUMING FROM QUEUE] :: END");
-    }
+//    @RabbitListener(queues = {"${rabbit.lesson.queue.name}"})
+//    public void createLesson(CreateLessonsRequest teacher) {
+//        teacherService.createNewLesson(teacher)
+//                .doOnSubscribe(subscription -> {
+//                    LOGGER.info("[CONSUMING FROM QUEUE UPDATE LESSON] :: START");
+//                })
+//                .doOnSuccess(t -> {
+//                    LOGGER.info("[CONSUMING FROM QUEUE UPDATE LESSON] :: END");
+//                })
+//                .subscribe();
+//    }
 
-    @RabbitListener(queues = {"${rabbit.update.lesson.queue.name}"})
-    public void updateLesson(UpdateLessonRequest updatedLessons) {
-        LOGGER.info("[CONSUMING FROM QUEUE UPDATE LESSON] :: START");
-        teacherService.updateLesson(updatedLessons)
-                .doOnSubscribe(subscription -> {
-                            LOGGER.info("[CONSUMING FROM QUEUE UPDATE LESSON] :: START");
-                        })
-                .doOnSuccess(teacher -> {
-                            LOGGER.info("[CONSUMING FROM QUEUE UPDATE LESSON] :: END");
-                        }
-                ).subscribe();
-
-    }
+//    @RabbitListener(queues = {"${rabbit.update.lesson.queue.name}"})
+//    public void updateLesson(UpdateLessonRequest updatedLessons) {
+//        teacherService.updateLesson(updatedLessons)
+//                .doOnSubscribe(subscription -> {
+//                    LOGGER.info("[CONSUMING FROM QUEUE UPDATE LESSON] :: START");
+//                })
+//                .doOnSuccess(teacher -> {
+//                    LOGGER.info("[CONSUMING FROM QUEUE UPDATE LESSON] :: END");
+//                })
+//                .subscribe();
+//
+//    }
 
 
 }
