@@ -99,7 +99,7 @@ public class TeacherServiceImpl implements TeacherService {
                 })
                 .doOnSuccess(teacher -> {
                     ops.set(key,teacher, Duration.ofMinutes(15)).subscribe();
-                    LOGGER.info("Lesson successfully Updated : " + lessons.getLessons().values());
+                    LOGGER.info("Lesson successfully Created : " + lessons.getLessons().values());
                 })
                 .doOnError(e -> {
                     LOGGER.error("Unable to create lesson : " + lessons.getLessons());

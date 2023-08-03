@@ -9,6 +9,6 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface TeacherRepository extends ReactiveMongoRepository<Teacher, String> {
     Mono<Teacher> findByUsername(String name);
-    Mono<Teacher> findByUsernameAndId(String username,String Id);
+
 }
 

@@ -33,8 +33,7 @@ public class StreamRabbit {
     @Bean
     public Consumer<Message<String>> createNewTeacher() {
         ObjectMapper objectMapper = new ObjectMapper();
-        final String subject = "User Created";
-        final String body = "user created ";
+
         return teacherMessage -> Flux.just(teacherMessage)
                 .limitRate(rateLimit)
                 .doOnNext(
@@ -43,11 +42,7 @@ public class StreamRabbit {
                                 final String payload = teacherMessage.getPayload();
                                 Teacher teacherFromPayload = objectMapper.readValue(payload, Teacher.class);
                                 teacherService.createNewTeacher(teacherFromPayload)
-                                        .doOnSuccess(teacher -> {
-                                            emailService
-                                                    .sendEmail(teacher.getEmail(), subject, body + teacher.getUsername())
-                                                    .subscribe();
-                                        }).subscribe();
+                                        .doOnSuccess(teacher -> emailService.sendEmail(teacher).subscribe()).subscribe();
                             } catch (Exception e) {
                                 throw new IllegalArgumentException(e);
                             }
@@ -70,9 +65,7 @@ public class StreamRabbit {
                         throw new RuntimeException(e);
                     }
                 })
-                .doOnComplete(() -> {
-                    log.info("[CONSUMING FROM QUEUE CREATE LESSON] :: END");
-                })
+                .doOnComplete(() -> log.info("[CONSUMING FROM QUEUE CREATE LESSON] :: END"))
                 .subscribe();
     }
 
