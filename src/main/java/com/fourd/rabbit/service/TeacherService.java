@@ -4,7 +4,6 @@ package com.fourd.rabbit.service;
 import com.fourd.rabbit.document.Teacher;
 import com.fourd.rabbit.dto.CreateLessonsRequest;
 import com.fourd.rabbit.dto.UpdateLessonRequest;
-import org.springframework.messaging.Message;
 import reactor.core.publisher.Mono;
 
 public interface TeacherService  {

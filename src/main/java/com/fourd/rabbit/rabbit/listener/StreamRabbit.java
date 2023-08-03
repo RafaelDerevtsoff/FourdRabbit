@@ -2,45 +2,52 @@ package com.fourd.rabbit.rabbit.listener;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fourd.rabbit.document.Lesson;
 import com.fourd.rabbit.document.Teacher;
 import com.fourd.rabbit.dto.CreateLessonsRequest;
 import com.fourd.rabbit.dto.UpdateLessonRequest;
+import com.fourd.rabbit.service.EmailService;
 import com.fourd.rabbit.service.TeacherService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.MessageHeaders;
 import reactor.core.publisher.Flux;
 
-import java.util.Objects;
 import java.util.function.Consumer;
 
 @Configuration
 public class StreamRabbit {
     private final Logger log = LoggerFactory.getLogger(StreamRabbit.class);
     private final TeacherService teacherService;
+    private final EmailService emailService;
     @Value("${ratelimit}")
     private int rateLimit;
 
-    public StreamRabbit(TeacherService teacherService) {
+    public StreamRabbit(TeacherService teacherService, EmailService emailService) {
         this.teacherService = teacherService;
+        this.emailService = emailService;
     }
 
     @Bean
     public Consumer<Message<String>> createNewTeacher() {
         ObjectMapper objectMapper = new ObjectMapper();
+        final String subject = "User Created";
+        final String body = "user created ";
         return teacherMessage -> Flux.just(teacherMessage)
                 .limitRate(rateLimit)
-                .doOnNext(message -> {
+                .doOnNext(
+                        message -> {
                             try {
                                 final String payload = teacherMessage.getPayload();
-                                Teacher teacher = objectMapper.readValue(payload, Teacher.class);
-                                teacherService.createNewTeacher(teacher).subscribe();
+                                Teacher teacherFromPayload = objectMapper.readValue(payload, Teacher.class);
+                                teacherService.createNewTeacher(teacherFromPayload)
+                                        .doOnSuccess(teacher -> {
+                                            emailService
+                                                    .sendEmail(teacher.getEmail(), subject, body + teacher.getUsername())
+                                                    .subscribe();
+                                        }).subscribe();
                             } catch (Exception e) {
                                 throw new IllegalArgumentException(e);
                             }

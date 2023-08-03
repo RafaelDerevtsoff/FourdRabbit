@@ -1,18 +1,21 @@
 package com.fourd.rabbit.document;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fourd.rabbit.document.Lesson;
 import com.mongodb.lang.NonNull;
+import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
 import java.util.List;
-@JsonDeserialize
+import java.util.Objects;
+
 @JsonSerialize
+@JsonDeserialize
 @Document(collection = "teachers")
 public class Teacher {
 
@@ -20,24 +23,38 @@ public class Teacher {
     private String id;
     @Indexed(unique = true)
     @NonNull
-    @JsonProperty("username")
+    @NotNull
     private String username;
     @Indexed(unique = true)
     @NonNull
+    @NotNull
     private String password;
     private boolean active;
-
+    @NonNull
+    @NotNull
+    private String email;
     private List<String> roles;
-    private HashMap<String,Lesson> lessons;
+
+    @NonNull
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(@NonNull String email) {
+        this.email = email;
+    }
 
     public Teacher() {
     }
 
-    public Teacher(String id, @NonNull String username, @NonNull String password, boolean active, List<String> roles, HashMap<String, Lesson> lessons) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
+    private HashMap<String,Lesson> lessons;
+
+
+    public Teacher(@Nonnull String username, @NotNull String password, boolean active, @NotNull String email, List<String> roles, HashMap<String, Lesson> lessons) {
+        this.username = Objects.requireNonNull(username);
+        this.password = Objects.requireNonNull(password);
         this.active = active;
+        this.email = Objects.requireNonNull(email);
         this.roles = roles;
         this.lessons = lessons;
     }
