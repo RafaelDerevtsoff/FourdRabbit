@@ -14,11 +14,9 @@ import reactor.core.publisher.Mono;
 public class EmailServiceImpl implements EmailService {
     private static final Logger log = LoggerFactory.getLogger(EmailServiceImpl.class);
     private final JavaMailSender mailSender;
-    private final TeacherRepository teacherRepository;
 
-    public EmailServiceImpl(JavaMailSender mailSender, TeacherRepository teacherRepository) {
+    public EmailServiceImpl(JavaMailSender mailSender) {
         this.mailSender = mailSender;
-        this.teacherRepository = teacherRepository;
     }
 
     @Override
